@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import {ClerkProvider} from "@clerk/nextjs"
+import { ThemeProvider } from "@/components/theme";
+import ReactQueryProvider from "@/react-query";
+import { Manrope, DM_Sans } from 'next/font/google'
+
+import { Toaster } from "sonner";
+import { ReduxProvider } from "@/redux/provider";
+const manrope = DM_Sans({ subsets: ['latin'] })
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,12 +33,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ClerkProvider>
+
+   
+    
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+         className={`${manrope.className} bg-[#171717]`}>
+
+      
+       
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          disableTransitionOnChange
+        >
+          <ReduxProvider>
+
+         
+        <ReactQueryProvider>
         {children}
+        <Toaster/>
+        </ReactQueryProvider>
+        </ReduxProvider>
+        </ThemeProvider>
+       
+       
       </body>
     </html>
+    </ClerkProvider>
   );
 }
